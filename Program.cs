@@ -22,23 +22,56 @@ namespace Source_Launcher
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
-            OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Title = "Select an executable file:";
-            dialog.Filter = "Source Executable File|default.src";
-            if (dialog.ShowDialog() == DialogResult.OK)
+            if (args.Length == 0)
             {
-                srcFilePath = dialog.FileName;
-                Console.WriteLine("[*] Reading the .src file...");
-                ReadSRCFile(dialog.FileName);
-                Console.WriteLine("[*] Checking the main dlls...");
-                CheckFilesAndDirectories(srcFilePath);
-                Console.WriteLine("[*] Loading all the dlls...");
-                LoadDLLs(dialog.FileName);
-                Console.WriteLine("[*] Calling \"Init\" method on the \"Application\" class...");
-                ExecuteMethod("Application", "InitWithSRCFile", new object[] { dialog.FileName }, BindingFlags.Static | BindingFlags.NonPublic);
-                Console.WriteLine($"[*] Calling \"Main\" method on the \"{config["mainMethodClassName"]}\" class...");
-                ExecuteMethod((string)config["mainMethodClassName"], "Main", new object[] { new string[] {} },
-                    BindingFlags.Static | BindingFlags.NonPublic, true);
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Title = "Select an executable file:";
+                dialog.Filter = "Source Executable File|default.src";
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    srcFilePath = dialog.FileName;
+                    Console.WriteLine("[*] Reading the .src file...");
+                    ReadSRCFile(srcFilePath);
+                    Console.WriteLine("[*] Checking the main dlls...");
+                    CheckFilesAndDirectories(srcFilePath);
+                    Console.WriteLine("[*] Loading all the dlls...");
+                    LoadDLLs(srcFilePath);
+                    Console.WriteLine("[*] Calling \"Init\" method on the \"Application\" class...");
+                    ExecuteMethod("Application", "InitWithSRCFile", new object[] { srcFilePath }, BindingFlags.Static | BindingFlags.NonPublic);
+                    Console.WriteLine($"[*] Calling \"Main\" method on the \"{config["mainMethodClassName"]}\" class...");
+                    ExecuteMethod((string)config["mainMethodClassName"], "Main", new object[] { new string[] { } },
+                        BindingFlags.Static | BindingFlags.NonPublic, true);
+                }
+            }
+            else if (args.Length == 1)
+            {
+                if (File.Exists(args[0]))
+                {
+                    srcFilePath = args[0];
+                    Console.WriteLine("[*] Reading the .src file...");
+                    ReadSRCFile(srcFilePath);
+                    Console.WriteLine("[*] Checking the main dlls...");
+                    CheckFilesAndDirectories(srcFilePath);
+                    Console.WriteLine("[*] Loading all the dlls...");
+                    LoadDLLs(srcFilePath);
+                    Console.WriteLine("[*] Calling \"Init\" method on the \"Application\" class...");
+                    ExecuteMethod("Application", "InitWithSRCFile", new object[] { srcFilePath }, BindingFlags.Static | BindingFlags.NonPublic);
+                    Console.WriteLine($"[*] Calling \"Main\" method on the \"{config["mainMethodClassName"]}\" class...");
+                    ExecuteMethod((string)config["mainMethodClassName"], "Main", new object[] { new string[] { } },
+                        BindingFlags.Static | BindingFlags.NonPublic, true);
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("The specified default.src file path doesn't exists.");
+                    Console.ReadKey();
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Unexpected arguments. Only can be one.");
+                Console.ReadKey();
             }
         }
 
