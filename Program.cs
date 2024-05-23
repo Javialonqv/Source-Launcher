@@ -99,7 +99,16 @@ namespace Source_Launcher
             // Deserealize the file:
             FileStream fs = new FileStream(srcFilePath, FileMode.Open);
             BinaryFormatter bf = new BinaryFormatter();
-            config = (Dictionary<string, object>)bf.Deserialize(fs);
+            try
+            {
+                config = (Dictionary<string, object>)bf.Deserialize(fs);
+            }
+            catch
+            {
+                PrintError("Error deserealizing the default.src file.");
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
             fs.Close();
         }
 
@@ -109,7 +118,14 @@ namespace Source_Launcher
 
             foreach (string file in Directory.GetFiles(dataPath))
             {
-                loadedAssemblies.Add(Assembly.LoadFile(file));
+                try
+                {
+                    loadedAssemblies.Add(Assembly.LoadFile(file));
+                }
+                catch
+                {
+                    PrintError($"Error loading the \"{Path.GetFileNameWithoutExtension(file)}\" DLL.");
+                }
             }
         }
 
@@ -139,6 +155,8 @@ namespace Source_Launcher
                     break;
                 }
             }
+            PrintError($"Can't find the \"{methodName}\" method.");
+            Console.ReadKey();
         }
 
         static Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
