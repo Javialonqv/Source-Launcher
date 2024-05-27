@@ -101,8 +101,8 @@ namespace Source_Launcher
                 }
             }
 
-            if (Directory.Exists(Path.Combine(Path.GetDirectoryName(srcFilePath), "data"))) { PrintError($"Error finding the data folder."); }
-            if (Directory.Exists(Path.Combine(Path.GetDirectoryName(srcFilePath), "Content"))) { PrintError($"Error finding the Content folder."); }
+            if (!Directory.Exists(Path.Combine(Path.GetDirectoryName(srcFilePath), "data"))) { PrintError($"Error finding the data folder."); }
+            if (!Directory.Exists(Path.Combine(Path.GetDirectoryName(srcFilePath), "Content"))) { PrintError($"Error finding the Content folder."); }
         }
 
         /// <summary>
