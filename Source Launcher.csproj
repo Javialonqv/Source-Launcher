@@ -9,6 +9,8 @@
 	<NoWarn>CS8602, CS8604, SYSLIB0011, CS8603, CS8600, CS8625</NoWarn>
 	<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
 	<UseWindowsForms>true</UseWindowsForms>
+    <PublishSingleFile>true</PublishSingleFile>
+	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>
