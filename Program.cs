@@ -38,7 +38,7 @@ namespace Source_Launcher
                     LoadDLLs(srcFilePath);
                     Console.WriteLine("[*] Calling \"Init\" method on the \"Application\" class...");
                     // Execute the InitWithSRCFile method with the path to the src file as argument.
-                    ExecuteMethod("Application", "InitWithSRCFile", new object[] { srcFilePath }, BindingFlags.Static | BindingFlags.NonPublic);
+                    ExecuteMethod("Application", "InitWithSRCFile", new object[] { srcFilePath }, BindingFlags.Static | BindingFlags.NonPublic, true);
                     Console.WriteLine($"[*] Calling \"Main\" method on the \"{config["mainMethodClassName"]}\" class...");
                     // Load the main method in the type specified by the config file.
                     ExecuteMethod((string)config["mainMethodClassName"], "Main", new object[] { new string[] { } },
@@ -58,7 +58,7 @@ namespace Source_Launcher
                     LoadDLLs(srcFilePath);
                     Console.WriteLine("[*] Calling \"Init\" method on the \"Application\" class...");
                     // Execute the InitWithSRCFile method with the path to the src file as argument.
-                    ExecuteMethod("Application", "InitWithSRCFile", new object[] { srcFilePath }, BindingFlags.Static | BindingFlags.NonPublic);
+                    ExecuteMethod("Application", "InitWithSRCFile", new object[] { srcFilePath }, BindingFlags.Static | BindingFlags.NonPublic, true);
                     Console.WriteLine($"[*] Calling \"Main\" method on the \"{config["mainMethodClassName"]}\" class...");
                     // Load the main method in the type specified by the config file.
                     ExecuteMethod((string)config["mainMethodClassName"], "Main", new object[] { new string[] { } },
