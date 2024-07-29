@@ -135,11 +135,11 @@ namespace Source_Launcher
         {
             string dataPath = Path.Combine(Path.GetDirectoryName(srcFilePath), "data");
 
-            foreach (string file in Directory.GetFiles(dataPath))
+            foreach (string file in Directory.GetFiles(dataPath, "*.dll"))
             {
                 try
                 {
-                    loadedAssemblies.Add(Assembly.LoadFile(file));
+                    loadedAssemblies.Add(Assembly.LoadFrom(file));
                 }
                 catch
                 {
@@ -176,6 +176,7 @@ namespace Source_Launcher
                         }
                         catch (Exception e)
                         {
+#pragma warning disable CS8597 // I hate this unnecesary warnings on .NET 8
                             throw e.InnerException;
                         }
                     }
@@ -186,7 +187,7 @@ namespace Source_Launcher
             Console.ReadKey();
         }
 
-        static Assembly OnAssemblyResolve(object sender, ResolveEventArgs args)
+        static Assembly OnAssemblyResolve(object? sender, ResolveEventArgs args)
         {
             string assemblyName = new AssemblyName(args.Name).Name + ".dll";
             string assemblyPath = Path.Combine(Path.GetDirectoryName(srcFilePath), "data", assemblyName);
